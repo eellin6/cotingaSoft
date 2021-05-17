@@ -1,12 +1,10 @@
 import ElevatorButtons from './components/ElevatorButtons';
-import WelcomeLobby from './components/WelcomeLobby';
 
 function App() {
 
   return (
     <div>
-      <div className="elevator-app">
-        <WelcomeLobby />
+      <div className='elevator-app'>
         <ElevatorButtons />
       </div>
     </div>

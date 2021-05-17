@@ -1,63 +1,80 @@
-import React, {useState} from 'react';
-require('dotenv').config();
+import React, { useState } from 'react';
 
-function ElevatorButtons() {
+//Hooks for setting state
+const ElevatorButtons = () => {
   const [input, setInput] = useState('');
   const [access, setAccess] = useState(false);
   const [Floor, setFloor] = useState('First Floor');
 
-  const currentFloor = (floor) => {
-    setFloor(floor)
-  }
+//CSS
+  const centerApp = {
+    fontSize: 14,
+    color: '#4a54f1',
+    textAlign: 'center',
+    paddingTop: '100px',
+  };
 
-  //teranary
-  const verify = () => {
-    if(input === process.env.REACT_APP_PASSWORD) {
+  //Helper Functions
+  const verifyPassword = () => {
+    if (input === process.env.REACT_APP_PASSWORD) {
       setAccess(true);
-      alert('Fourth Floor ON!')
     } else {
-      //cleaner example (possibly snackbar)
-      alert('Incorrect Password!')
+      alert('Password Denied');
     }
-  }
+  };
 
   const removeKey = () => {
     setAccess(false);
     setInput('');
-    alert('Fourth Floor OFF!')
-  }
+  };
 
   return (
-    <div>
-      <h3>Choose Your Floor</h3>
-      <h2>You Are Currently On The: {Floor}</h2>
+    <div style={centerApp}>
+      <h1>Welcome to the CotingaSoft!</h1>
+      <h2>
+        <i>The Elevators are just behind me</i>
+      </h2>
+      <h3>Please Choose Your Floor</h3>
       <div>
-      <button className='elevator-button' onClick={verify}>Insert Key</button><button onClick={removeKey}>Remove Key</button>
-        <input type='text'
-        placeholder='Level 4 Access'
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        name='text'
-        className='elevator-input'
-      />
-      <form className='elevator-form'>
-      </form>
+        <button className='elevator-button' onClick={verifyPassword}>
+          Insert Key
+        </button>
+        <button onClick={removeKey}>Remove Key</button>
+        <input
+          type='text'
+          placeholder='Level 4 Access'
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          name='text'
+          className='elevator-input'
+        />
+        <form className='elevator-form'></form>
       </div>
-      {
-        access ? <div>
-          <input type='radio' name='floor' value='first-floor' defaultChecked onClick={() => currentFloor('First Floor')}/>First Floor
-      <input type='radio' name='floor' value='Second-floor' onClick={() => currentFloor('Second Floor')}/>Second Floor
-      <input type='radio' name='floor' value='Third-floor' onClick={() => currentFloor('Third Floor')}/>Third Floor
-      <input type='radio' name='floor' value='Forth-floor' onClick={() => currentFloor('Fourth Floor')}/>Fourth Floor
+      {['First', 'Second', 'Third'].map((floor) => (
+        <div>
+          <input
+            type='radio'
+            name='floor'
+            value={`${floor}-floor`}
+            defaultChecked={floor === 'First'}
+            onClick={() => setFloor(`${floor} Floor`)}
+          />
+          <label>{`${floor} Floor`}</label>
         </div>
-        : <div>
-          <input type='radio' name='floor' value='first-floor' defaultChecked onClick={() => currentFloor('First Floor')}/>First Floor
-      <input type='radio' name='floor' value='Second-floor' onClick={() => currentFloor('Second Floor')}/>Second Floor
-      <input type='radio' name='floor' value='Third-floor' onClick={() => currentFloor('Third Floor')}/>Third Floor
-        </div>
-      }
+      ))}
+      <input
+        type='radio'
+        name='floor'
+        disabled={!access}
+        value='Forth-floor'
+        onClick={() => setFloor('Fourth Floor')}
+      />
+      <label style={{ color: access ? 'green' : 'red' }}>
+        Fourth Floor {!access ? 'Locked' : 'Unlocked!'}
+      </label>
+      <h2>You Are Currently On The: {Floor}</h2>
     </div>
-  )
-}
+  );
+};
 
-export default ElevatorButtons
+export default ElevatorButtons;
