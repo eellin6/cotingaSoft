@@ -1,2 +1,0 @@
-# cotingaSoft
-Coding Exercise 
